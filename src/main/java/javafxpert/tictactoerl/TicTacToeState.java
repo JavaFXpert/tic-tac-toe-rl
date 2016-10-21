@@ -15,14 +15,14 @@ import java.util.List;
  */
 @DeepCopyState
 public class TicTacToeState implements MutableState {
-  private static String VAR_PRIOR_MOVES = "priorMoves";
-  private static String VAR_GAME_STATUS = "gameStatus";
-  private static String VAR_FIRST_PLAYER = "firstPlayer";
+  public static String VAR_PRIOR_MOVES = "priorMoves";
+  public static String VAR_GAME_STATUS = "gameStatus";
+  public static String VAR_FIRST_PLAYER = "firstPlayer";
 
-  private static String GAME_STATUS_IN_PROGRESS = "I";
-  private static String GAME_STATUS_X_WON =       "X";
-  private static String GAME_STATUS_O_WON =       "O";
-  private static String GAME_STATUS_CATS_GAME =   "C";
+  public static String GAME_STATUS_IN_PROGRESS = "I";
+  public static String GAME_STATUS_X_WON =       "X";
+  public static String GAME_STATUS_O_WON =       "O";
+  public static String GAME_STATUS_CATS_GAME =   "C";
 
   private static String FIRST_PLAYER_X =          "X";
 
