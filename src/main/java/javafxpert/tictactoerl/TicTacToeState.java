@@ -28,16 +28,13 @@ public class TicTacToeState implements MutableState {
   public static String GAME_STATUS_O_WON =       "O";
   public static String GAME_STATUS_CATS_GAME =   "C";
 
-  public static String X = "X";
-  public static String O = "O";
-  public static String EMPTY = "I";
-
+  public static String EMPTY_BOARD = "IIIIIIII";
 
   /**
    * String representation of cells on the game board.
    * For example: "XOIIXOXIO"
    */
-  private String gameBoard = EMPTY + EMPTY + EMPTY + EMPTY + EMPTY + EMPTY + EMPTY + EMPTY + EMPTY;
+  private String gameBoard = EMPTY_BOARD;
 
   /**
    * Game status, specifically, whether the game is in-progress, or if X won,

@@ -24,7 +24,7 @@ public class TicTacToeEnv implements Environment {
    * String representation of cells on the game board.
    * For example: "XOIIXOXIO"
    */
-  private StringBuffer gb;
+  private StringBuffer gameBoard;
 
   /**
    * Game status, specifically, whether the game is in-progress, or if X won,
@@ -56,7 +56,7 @@ public class TicTacToeEnv implements Environment {
     MoveAction moveAction = (MoveAction)action;
 
     TicTacToeState priorState = new TicTacToeState();
-    priorState.set(TicTacToeState.VAR_GAME_BOARD, gb.toString());
+    priorState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
     priorState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
 
     TicTacToeState newState = new TicTacToeState();
@@ -65,12 +65,12 @@ public class TicTacToeEnv implements Environment {
     int cellNum = moveAction.getActionId();
 
     if (cellNum < 1 || cellNum > TicTacToeState.NUM_CELLS ||
-        (gb.charAt(cellNum - 1) != EMPTY)) {
+        (gameBoard.charAt(cellNum - 1) != EMPTY)) {
       // Illegal move attempted so don't change
       System.out.println("Illegal move attempted to cell " + cellNum);
     }
     else {
-      gb.setCharAt(cellNum - 1, X_MARK);
+      gameBoard.setCharAt(cellNum - 1, X_MARK);
     }
 
     gameStatus = evalGameStatus();
@@ -91,10 +91,10 @@ public class TicTacToeEnv implements Environment {
       terminated = false;
       // For now, the environment will employ a simple strategy, filling in the
       // first empty cell with an "O"
-      gb.setCharAt(gb.indexOf(Character.toString(EMPTY)), O_MARK);
+      gameBoard.setCharAt(gameBoard.indexOf(Character.toString(EMPTY)), O_MARK);
     }
 
-    newState.set(TicTacToeState.VAR_GAME_BOARD, gb.toString());
+    newState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
     newState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
 
     EnvironmentOutcome environmentOutcome =
@@ -115,7 +115,7 @@ public class TicTacToeEnv implements Environment {
 
   @Override
   public void resetEnvironment() {
-    gb = new StringBuffer("IIIIIIII");
+    gameBoard = new StringBuffer(TicTacToeState.EMPTY_BOARD);
     gameStatus = TicTacToeState.GAME_STATUS_IN_PROGRESS;
   }
 
@@ -130,31 +130,31 @@ public class TicTacToeEnv implements Environment {
 
     // Check if this game is still in progress
     for (int idx = 0; idx < TicTacToeState.NUM_CELLS; idx++) {
-      if (gb.charAt(idx) ==  EMPTY) {
+      if (gameBoard.charAt(idx) ==  EMPTY) {
         gameStatus = TicTacToeState.GAME_STATUS_IN_PROGRESS;
         break;
       }
     }
 
     // Check if X won
-    if ((gb.charAt(0) == X_MARK && gb.charAt(1) == X_MARK && gb.charAt(2) == X_MARK) ||
-        (gb.charAt(3) == X_MARK && gb.charAt(4) == X_MARK && gb.charAt(5) == X_MARK) ||
-        (gb.charAt(6) == X_MARK && gb.charAt(7) == X_MARK && gb.charAt(8) == X_MARK) ||
-        (gb.charAt(0) == X_MARK && gb.charAt(3) == X_MARK && gb.charAt(6) == X_MARK) ||
-        (gb.charAt(1) == X_MARK && gb.charAt(4) == X_MARK && gb.charAt(7) == X_MARK) ||
-        (gb.charAt(2) == X_MARK && gb.charAt(5) == X_MARK && gb.charAt(8) == X_MARK) ||
-        (gb.charAt(0) == X_MARK && gb.charAt(4) == X_MARK && gb.charAt(8) == X_MARK) ||
-        (gb.charAt(2) == X_MARK && gb.charAt(4) == X_MARK && gb.charAt(6) == X_MARK)) {
+    if ((gameBoard.charAt(0) == X_MARK && gameBoard.charAt(1) == X_MARK && gameBoard.charAt(2) == X_MARK) ||
+        (gameBoard.charAt(3) == X_MARK && gameBoard.charAt(4) == X_MARK && gameBoard.charAt(5) == X_MARK) ||
+        (gameBoard.charAt(6) == X_MARK && gameBoard.charAt(7) == X_MARK && gameBoard.charAt(8) == X_MARK) ||
+        (gameBoard.charAt(0) == X_MARK && gameBoard.charAt(3) == X_MARK && gameBoard.charAt(6) == X_MARK) ||
+        (gameBoard.charAt(1) == X_MARK && gameBoard.charAt(4) == X_MARK && gameBoard.charAt(7) == X_MARK) ||
+        (gameBoard.charAt(2) == X_MARK && gameBoard.charAt(5) == X_MARK && gameBoard.charAt(8) == X_MARK) ||
+        (gameBoard.charAt(0) == X_MARK && gameBoard.charAt(4) == X_MARK && gameBoard.charAt(8) == X_MARK) ||
+        (gameBoard.charAt(2) == X_MARK && gameBoard.charAt(4) == X_MARK && gameBoard.charAt(6) == X_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_X_WON;
     }
-    else if ((gb.charAt(0) == O_MARK && gb.charAt(1) == O_MARK && gb.charAt(2) == O_MARK) ||
-        (gb.charAt(3) == O_MARK && gb.charAt(4) == O_MARK && gb.charAt(5) == O_MARK) ||
-        (gb.charAt(6) == O_MARK && gb.charAt(7) == O_MARK && gb.charAt(8) == O_MARK) ||
-        (gb.charAt(0) == O_MARK && gb.charAt(3) == O_MARK && gb.charAt(6) == O_MARK) ||
-        (gb.charAt(1) == O_MARK && gb.charAt(4) == O_MARK && gb.charAt(7) == O_MARK) ||
-        (gb.charAt(2) == O_MARK && gb.charAt(5) == O_MARK && gb.charAt(8) == O_MARK) ||
-        (gb.charAt(0) == O_MARK && gb.charAt(4) == O_MARK && gb.charAt(8) == O_MARK) ||
-        (gb.charAt(2) == O_MARK && gb.charAt(4) == O_MARK && gb.charAt(6) == O_MARK)) {
+    else if ((gameBoard.charAt(0) == O_MARK && gameBoard.charAt(1) == O_MARK && gameBoard.charAt(2) == O_MARK) ||
+        (gameBoard.charAt(3) == O_MARK && gameBoard.charAt(4) == O_MARK && gameBoard.charAt(5) == O_MARK) ||
+        (gameBoard.charAt(6) == O_MARK && gameBoard.charAt(7) == O_MARK && gameBoard.charAt(8) == O_MARK) ||
+        (gameBoard.charAt(0) == O_MARK && gameBoard.charAt(3) == O_MARK && gameBoard.charAt(6) == O_MARK) ||
+        (gameBoard.charAt(1) == O_MARK && gameBoard.charAt(4) == O_MARK && gameBoard.charAt(7) == O_MARK) ||
+        (gameBoard.charAt(2) == O_MARK && gameBoard.charAt(5) == O_MARK && gameBoard.charAt(8) == O_MARK) ||
+        (gameBoard.charAt(0) == O_MARK && gameBoard.charAt(4) == O_MARK && gameBoard.charAt(8) == O_MARK) ||
+        (gameBoard.charAt(2) == O_MARK && gameBoard.charAt(4) == O_MARK && gameBoard.charAt(6) == O_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_O_WON;
     }
     return gameStatus;
