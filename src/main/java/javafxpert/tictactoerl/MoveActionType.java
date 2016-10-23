@@ -11,11 +11,6 @@ import java.util.List;
  * Created by jamesweaver on 10/21/16.
  */
 public class MoveActionType implements ActionType {
-  /**
-   * Constant for number of cells on a Tac-Tac-Toe board
-   */
-  public static int NUM_CELLS = 9;
-
   public static String BASE_ACTION_NAME = "moveAction";
 
 
@@ -36,8 +31,8 @@ public class MoveActionType implements ActionType {
 
     String gameStatus = (String)tttState.get(TicTacToeState.VAR_GAME_STATUS);
     if (gameStatus.equals(TicTacToeState.GAME_STATUS_IN_PROGRESS)) {
-      List<Integer> priorMoves = (List<Integer>) tttState.get(TicTacToeState.VAR_PRIOR_MOVES);
-      for (int i = 1; i <= NUM_CELLS; i++) {
+      List<Integer> priorMoves = (List<Integer>) tttState.get(TicTacToeState.VAR_GAME_BOARD);
+      for (int i = 1; i <= TicTacToeState.NUM_CELLS; i++) {
         if (!priorMoves.contains(new Integer(i))) {
           applicableActions.add(new MoveAction(i));
         }

@@ -7,7 +7,7 @@ import burlap.mdp.core.action.Action;
  */
 public class MoveAction implements Action {
   /**
-   * The action number of this action.  Corresponds to a tic-tac-toe cell (1-9)
+   * The action ID of this action.  Corresponds to a tic-tac-toe cell (1-9)
    */
   private int actionId;
 
@@ -15,6 +15,10 @@ public class MoveAction implements Action {
 
   public MoveAction(int actionId) {
     this.actionId = actionId;
+  }
+
+  public int getActionId() {
+    return actionId;
   }
 
   @Override

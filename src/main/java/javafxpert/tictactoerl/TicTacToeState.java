@@ -15,29 +15,29 @@ import java.util.List;
  */
 @DeepCopyState
 public class TicTacToeState implements MutableState {
-  public static String VAR_PRIOR_MOVES = "priorMoves";
+  /**
+   * Constant for number of cells on a Tac-Tac-Toe board
+   */
+  public static int NUM_CELLS = 9;
+
+  public static String VAR_GAME_BOARD = "gameBoard";
   public static String VAR_GAME_STATUS = "gameStatus";
-  public static String VAR_FIRST_PLAYER = "firstPlayer";
 
   public static String GAME_STATUS_IN_PROGRESS = "I";
   public static String GAME_STATUS_X_WON =       "X";
   public static String GAME_STATUS_O_WON =       "O";
   public static String GAME_STATUS_CATS_GAME =   "C";
 
-  private static String FIRST_PLAYER_X =          "X";
+  public static String X = "X";
+  public static String O = "O";
+  public static String EMPTY = "I";
+
 
   /**
-   * List of moves made in this game so far.  Will be an empty list if no moves have been made.
-   * Cells on game board are notated as follows:
-   *
-   *   1 | 2 | 3
-   *   ----------
-   *   4 | 5 | 6
-   *   ----------
-   *   7 | 8 | 9
-   *
+   * String representation of cells on the game board.
+   * For example: "XOIIXOXIO"
    */
-  private List<Integer> priorMoves = new ArrayList<>();
+  private String gameBoard = EMPTY + EMPTY + EMPTY + EMPTY + EMPTY + EMPTY + EMPTY + EMPTY + EMPTY;
 
   /**
    * Game status, specifically, whether the game is in-progress, or if X won,
@@ -45,34 +45,24 @@ public class TicTacToeState implements MutableState {
    */
   private String gameStatus = GAME_STATUS_IN_PROGRESS;
 
-  /**
-   * Status of who played first (X or O).  Currently, the computer always
-   * moves first, and is X.
-   */
-  private String firstPlayer = FIRST_PLAYER_X;
-
   private final static List<Object> keys =
-      Arrays.asList(VAR_PRIOR_MOVES, VAR_GAME_STATUS, VAR_FIRST_PLAYER);
+      Arrays.asList(VAR_GAME_BOARD, VAR_GAME_STATUS);
 
   public TicTacToeState() {
   }
 
-  public TicTacToeState(List<Integer> priorMoves, String gameStatus, String firstPlayer) {
-    this.priorMoves = priorMoves;
+  public TicTacToeState(String gameBoard, String gameStatus) {
+    this.gameBoard = gameBoard;
     this.gameStatus = gameStatus;
-    this.firstPlayer = firstPlayer;
   }
 
   @Override
   public MutableState set(Object variableKey, Object value) {
-    if(variableKey.equals(VAR_PRIOR_MOVES)){
-      this.priorMoves = (List<Integer>)value;
+    if(variableKey.equals(VAR_GAME_BOARD)){
+      this.gameBoard = (String)value;
     }
     else if(variableKey.equals(VAR_GAME_STATUS)){
       this.gameStatus = (String)value;
-    }
-    else if(variableKey.equals(VAR_FIRST_PLAYER)){
-      this.firstPlayer = (String)value;
     }
     else{
       throw new UnknownKeyException(variableKey);
@@ -87,21 +77,18 @@ public class TicTacToeState implements MutableState {
 
   @Override
   public Object get(Object variableKey) {
-    if(variableKey.equals(VAR_PRIOR_MOVES)){
-      return this.priorMoves;
+    if(variableKey.equals(VAR_GAME_BOARD)){
+      return this.gameBoard;
     }
     else if(variableKey.equals(VAR_GAME_STATUS)){
       return this.gameStatus;
-    }
-    else if(variableKey.equals(VAR_FIRST_PLAYER)){
-      return this.firstPlayer;
     }
     throw new UnknownKeyException(variableKey);
   }
 
   @Override
   public TicTacToeState copy() {
-    return new TicTacToeState(priorMoves, gameStatus, firstPlayer);
+    return new TicTacToeState(gameBoard, gameStatus);
   }
 
   @Override
