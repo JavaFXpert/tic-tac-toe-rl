@@ -10,10 +10,8 @@
 package javafxpert.tictactoerl;
 
 import burlap.mdp.auxiliary.DomainGenerator;
-import burlap.mdp.core.Domain;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.SADomain;
-import burlap.mdp.singleagent.environment.Environment;
 import burlap.shell.visual.VisualExplorer;
 import burlap.visualizer.StatePainter;
 import burlap.visualizer.StateRenderLayer;
@@ -22,7 +20,6 @@ import burlap.visualizer.Visualizer;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 /**
  * Created by jamesweaver on 10/20/16.
@@ -54,7 +51,6 @@ public class TicTacToeWorld implements DomainGenerator {
 
     public void paint(Graphics2D g2, State s, float cWidth, float cHeight) {
 
-      //walls will be filled in black
       g2.setColor(Color.BLACK);
 
       //set up floats for the width and height of our domain
@@ -66,13 +62,9 @@ public class TicTacToeWorld implements DomainGenerator {
       float width = cWidth / fWidth;
       float height = cHeight / fHeight;
 
-      //pass through each cell of our map and if it's a wall, paint a black rectangle on our
-      //canvas of dimension widthxheight
       for(int col = 0; col < NUM_ROWS_COLS; col++){
         for(int row = 0; row < NUM_ROWS_COLS; row++){
 
-          //is there a wall here?
-          //if((i % 2 == 1) || (j % 2 == 1)) {
           if (true) {
 
             //left coordinate of cell on our canvas
@@ -101,8 +93,8 @@ public class TicTacToeWorld implements DomainGenerator {
     public void paint(Graphics2D g2, State s,
                       float cWidth, float cHeight) {
 
-      //agent will be filled in gray
-      g2.setColor(Color.GRAY);
+      //marks will be filled in gray
+      g2.setColor(Color.BLUE);
 
       //set up floats for the width and height of our domain
       float fWidth = NUM_COLS;
@@ -112,9 +104,6 @@ public class TicTacToeWorld implements DomainGenerator {
       //such that the whole map can be painted
       float width = cWidth / fWidth;
       float height = cHeight / fHeight;
-
-//      int ax = (Integer)s.get(VAR_X);
-//      int ay = (Integer)s.get(VAR_Y);
 
       String gameBoard = (String)s.get(TicTacToeState.VAR_GAME_BOARD);
 
@@ -129,7 +118,6 @@ public class TicTacToeWorld implements DomainGenerator {
 
           //is there a mark here?
           if(cellMark != TicTacToeState.EMPTY) {
-            //if (true) {
 
             //left coordinate of cell on our canvas
             float rx = col * width;
@@ -146,11 +134,8 @@ public class TicTacToeWorld implements DomainGenerator {
               g2.drawLine((int)(rx + width), (int)ry, (int)rx, (int)(ry + height));
             }
           }
-
-
         }
       }
-
     }
   }
 
@@ -161,8 +146,6 @@ public class TicTacToeWorld implements DomainGenerator {
     State initialState = new TicTacToeState(TicTacToeState.EMPTY_BOARD,
         TicTacToeState.GAME_STATUS_IN_PROGRESS);
 
-    // TODO: Ascertain whether necessary to pass domain or initial state to constructor
-    //       like ExampleGridWorld does
     TicTacToeEnv env = new TicTacToeEnv();
 
     Visualizer v = gen.getVisualizer();
@@ -180,5 +163,4 @@ public class TicTacToeWorld implements DomainGenerator {
 
     exp.initGUI();
   }
-
 }

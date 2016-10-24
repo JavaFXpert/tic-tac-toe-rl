@@ -1,12 +1,10 @@
 package javafxpert.tictactoerl;
 
 import burlap.mdp.core.state.MutableState;
-import burlap.mdp.core.state.State;
 import burlap.mdp.core.state.StateUtilities;
 import burlap.mdp.core.state.UnknownKeyException;
 import burlap.mdp.core.state.annotations.DeepCopyState;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,13 +37,13 @@ public class TicTacToeState implements MutableState {
    * String representation of cells on the game board.
    * For example: "XOIIXOXIO"
    */
-  private String gameBoard = EMPTY_BOARD;
+  public String gameBoard = EMPTY_BOARD;
 
   /**
    * Game status, specifically, whether the game is in-progress, or if X won,
    * or if O won, or if it is cat's game (nobody won).
    */
-  private String gameStatus = GAME_STATUS_IN_PROGRESS;
+  public String gameStatus = GAME_STATUS_IN_PROGRESS;
 
   private final static List<Object> keys =
       Arrays.asList(VAR_GAME_BOARD, VAR_GAME_STATUS);

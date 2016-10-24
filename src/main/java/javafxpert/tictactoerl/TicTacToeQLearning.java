@@ -1,26 +1,13 @@
 package javafxpert.tictactoerl;
 
-import burlap.behavior.policy.GreedyQPolicy;
-import burlap.behavior.policy.Policy;
 import burlap.behavior.singleagent.Episode;
 import burlap.behavior.singleagent.auxiliary.EpisodeSequenceVisualizer;
-import burlap.behavior.singleagent.auxiliary.StateReachability;
-import burlap.behavior.singleagent.auxiliary.valuefunctionvis.ValueFunctionVisualizerGUI;
 import burlap.behavior.singleagent.learning.LearningAgent;
 import burlap.behavior.singleagent.learning.tdmethods.QLearning;
-import burlap.behavior.valuefunction.QProvider;
-import burlap.behavior.valuefunction.ValueFunction;
-import burlap.domain.singleagent.gridworld.GridWorldDomain;
-import burlap.domain.singleagent.gridworld.GridWorldVisualizer;
-import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.SADomain;
-import burlap.mdp.singleagent.common.VisualActionObserver;
-import burlap.mdp.singleagent.environment.Environment;
 import burlap.statehashing.HashableStateFactory;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
 import burlap.visualizer.Visualizer;
-
-import java.util.List;
 
 /**
  * Created by jamesweaver on 10/24/16.
@@ -38,18 +25,18 @@ public class TicTacToeQLearning {
     for(int i = 0; i < 200; i++){
       Episode e = agent.runLearningEpisode(env);
 
-      //e.write(outputPath + "ql_" + i);
-      //System.out.println(i + ": " + e.maxTimeStep() + "\n");
+      e.write(outputPath + "ql_" + i);
 
       //reset environment for next learning episode
       env.resetEnvironment();
     }
 
+//TODO: Attempt to get this visualization working
 //    VisualActionObserver observer = new VisualActionObserver(ticTacToeWorld.getVisualizer());
 //		observer.initGUI();
 //		env.addObservers(observer);
 
-//    Visualizer v = ticTacToeWorld.getVisualizer();
-//    new EpisodeSequenceVisualizer(v, domain, outputPath);
+    Visualizer v = ticTacToeWorld.getVisualizer();
+    new EpisodeSequenceVisualizer(v, domain, outputPath);
   }
 }

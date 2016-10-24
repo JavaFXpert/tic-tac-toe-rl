@@ -11,7 +11,7 @@ public class MoveAction implements Action {
    */
   private int actionId;
 
-  //public MoveAction() {}
+  public MoveAction() {}
 
   public MoveAction(int actionId) {
     this.actionId = actionId;
@@ -39,7 +39,6 @@ public class MoveAction implements Action {
     MoveAction that = (MoveAction) o;
 
     return actionId == that.actionId;
-
   }
 
   @Override

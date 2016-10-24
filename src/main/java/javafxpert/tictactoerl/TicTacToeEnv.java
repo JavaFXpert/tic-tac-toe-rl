@@ -86,17 +86,13 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
     MoveAction moveAction = (MoveAction)action;
 
     TicTacToeState priorState = new TicTacToeState(gameBoard.toString(), gameStatus);
-//    priorState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
-//    priorState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
-
-    //TicTacToeState newState = new TicTacToeState();
-    //TicTacToeState newState = priorState.copy();
 
     // actionId is the same as the cell number (1 - 9) of the move
     int cellNum = moveAction.getActionId();
 
     if (cellNum < 1 || cellNum > TicTacToeState.NUM_CELLS ||
         (gameBoard.charAt(cellNum - 1) != TicTacToeState.EMPTY)) {
+
       // Illegal move attempted so don't change
       System.out.println("Illegal move attempted to cell " + cellNum);
     }
@@ -110,6 +106,7 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
       terminated = true;
     }
     else if (gameStatus.equals(TicTacToeState.GAME_STATUS_O_WON)) {
+
       // TODO: Consider removing this condition, as it doen't seem possible to encounter
       reward = LOSE_REWARD;
       terminated = true;
@@ -121,6 +118,7 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
     else {
       reward = MOVE_REWARD;
       terminated = false;
+
       // For now, the environment will employ a simple strategy, filling in the
       // first empty cell with an "O"
       gameBoard.setCharAt(gameBoard.indexOf(Character.toString(TicTacToeState.EMPTY)), TicTacToeState.O_MARK);
@@ -138,8 +136,6 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
     }
 
     TicTacToeState newState = new TicTacToeState(gameBoard.toString(), gameStatus);
-//    newState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
-//    newState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
 
     currentObservationState = newState.copy();
 
@@ -165,8 +161,6 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
     gameStatus = TicTacToeState.GAME_STATUS_IN_PROGRESS;
 
     currentObservationState = new TicTacToeState(gameBoard.toString(), gameStatus);
-//    currentObservationState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
-//    currentObservationState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
 
     terminated = false;
   }
@@ -211,12 +205,12 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
         (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.O_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_O_WON;
       //System.out.println("O won");
-      System.out.print(".");
+      System.out.print("o");
     }
 
     if (gameStatus.equals(TicTacToeState.GAME_STATUS_CATS_GAME)) {
       //System.out.println("Cat's game");
-      System.out.print(",");
+      System.out.print(".");
     }
     return gameStatus;
   }
