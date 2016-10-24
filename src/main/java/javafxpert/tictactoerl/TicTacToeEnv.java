@@ -93,6 +93,8 @@ public class TicTacToeEnv implements Environment {
       // For now, the environment will employ a simple strategy, filling in the
       // first empty cell with an "O"
       gameBoard.setCharAt(gameBoard.indexOf(Character.toString(TicTacToeState.EMPTY)), TicTacToeState.O_MARK);
+
+      evalGameStatus(); // TODO: Decide whether to make this call, as only purpose now is to print if O won by moving
     }
 
     newState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
@@ -151,6 +153,7 @@ public class TicTacToeEnv implements Environment {
         (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.X_MARK) ||
         (gameBoard.charAt(2) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(6) == TicTacToeState.X_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_X_WON;
+      System.out.println("X won");
     }
     else if ((gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(2) == TicTacToeState.O_MARK) ||
         (gameBoard.charAt(3) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(5) == TicTacToeState.O_MARK) ||
@@ -161,6 +164,11 @@ public class TicTacToeEnv implements Environment {
         (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.O_MARK) ||
         (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.O_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_O_WON;
+      System.out.println("O won");
+    }
+
+    if (gameStatus.equals(TicTacToeState.GAME_STATUS_CATS_GAME)) {
+      System.out.println("Cat's game");
     }
     return gameStatus;
   }
