@@ -50,7 +50,7 @@ public class TicTacToeWorld implements DomainGenerator {
   }
 
   public class WallPainter implements StatePainter {
-    private int NUM_ROWS_COLS = 5;
+    private int NUM_ROWS_COLS = 3;
 
     public void paint(Graphics2D g2, State s, float cWidth, float cHeight) {
 
@@ -72,8 +72,8 @@ public class TicTacToeWorld implements DomainGenerator {
         for(int j = 0; j < NUM_ROWS_COLS; j++){
 
           //is there a wall here?
-          if((i % 2 == 1) || (j % 2 == 1)) {
-          //if (true) {
+          //if((i % 2 == 1) || (j % 2 == 1)) {
+          if (true) {
 
             //left coordinate of cell on our canvas
             float rx = i * width;
@@ -84,10 +84,7 @@ public class TicTacToeWorld implements DomainGenerator {
             float ry = cHeight - height - j * height;
 
             //paint the rectangle
-            g2.fill(new Rectangle2D.Float(rx, ry, width, height));
-
-            //g2.fill(new Rectangle2D.Float(300, 300, 100, 200));
-
+            g2.draw(new Rectangle2D.Float(rx, ry, width, height));
           }
 
 
@@ -99,7 +96,8 @@ public class TicTacToeWorld implements DomainGenerator {
 
   public class AgentPainter implements StatePainter {
 
-    private int NUM_ROWS_COLS = 5;
+    private int NUM_ROWS = 3;
+    private int NUM_COLS = 3;
 
     @Override
     public void paint(Graphics2D g2, State s,
@@ -109,8 +107,8 @@ public class TicTacToeWorld implements DomainGenerator {
       g2.setColor(Color.GRAY);
 
       //set up floats for the width and height of our domain
-      float fWidth = NUM_ROWS_COLS;
-      float fHeight = NUM_ROWS_COLS;
+      float fWidth = NUM_COLS;
+      float fHeight = NUM_ROWS;
 
       //determine the width of a single cell on our canvas
       //such that the whole map can be painted
@@ -120,22 +118,28 @@ public class TicTacToeWorld implements DomainGenerator {
 //      int ax = (Integer)s.get(VAR_X);
 //      int ay = (Integer)s.get(VAR_Y);
 
-      //pass through each cell of our map and if it's a wall, paint a black rectangle on our
-      //canvas of dimension widthxheight
-      for(int i = 0; i < NUM_ROWS_COLS; i++){
-        for(int j = 0; j < NUM_ROWS_COLS; j++){
+      String gameBoard = (String)s.get(TicTacToeState.VAR_GAME_BOARD);
 
-          //is there a wall here?
-          if((i % 2 == 1) || (j % 2 == 1)) {
+      //pass through each cell of our board, and it it's an X or O, it on our
+      //canvas of dimension width x height
+      for(int col = 0; col < NUM_ROWS; col++){
+        for(int row = 0; row < NUM_COLS; row++){
+
+          //TODO: Create utilities, perhaps with an associated enum, for reading contents of cells from the gameboard
+
+          char cellMark = gameBoard.charAt(row * NUM_ROWS + col);
+
+          //is there a mark here?
+          if(cellMark != TicTacToeState.EMPTY) {
             //if (true) {
 
             //left coordinate of cell on our canvas
-            float rx = i * width;
+            float rx = col * width;
 
             //top coordinate of cell on our canvas
             //coordinate system adjustment because the java canvas
             //origin is in the top left instead of the bottom right
-            float ry = cHeight - height - j * height;
+            float ry = cHeight - height - row * height;
 
             //paint the ellipse
             g2.fill(new Ellipse2D.Float(rx, ry, width, height));

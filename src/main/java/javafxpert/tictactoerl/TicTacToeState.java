@@ -23,6 +23,11 @@ public class TicTacToeState implements MutableState {
   public static String VAR_GAME_BOARD = "gameBoard";
   public static String VAR_GAME_STATUS = "gameStatus";
 
+
+  public static char X_MARK = 'X';
+  public static char O_MARK = 'O';
+  public static char EMPTY = 'I';
+
   public static String GAME_STATUS_IN_PROGRESS = "I";
   public static String GAME_STATUS_X_WON =       "X";
   public static String GAME_STATUS_O_WON =       "O";

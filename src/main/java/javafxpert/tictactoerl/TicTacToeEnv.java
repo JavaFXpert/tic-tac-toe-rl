@@ -16,10 +16,6 @@ public class TicTacToeEnv implements Environment {
   private static int LOSE_REWARD = -8;
   private static int MOVE_REWARD = -1;
 
-  private static char X_MARK = 'X';
-  private static char O_MARK = 'O';
-  private static char EMPTY = 'I';
-
   /**
    * String representation of cells on the game board.
    * For example: "XOIIXOXIO"
@@ -70,12 +66,12 @@ public class TicTacToeEnv implements Environment {
     int cellNum = moveAction.getActionId();
 
     if (cellNum < 1 || cellNum > TicTacToeState.NUM_CELLS ||
-        (gameBoard.charAt(cellNum - 1) != EMPTY)) {
+        (gameBoard.charAt(cellNum - 1) != TicTacToeState.EMPTY)) {
       // Illegal move attempted so don't change
       System.out.println("Illegal move attempted to cell " + cellNum);
     }
     else {
-      gameBoard.setCharAt(cellNum - 1, X_MARK);
+      gameBoard.setCharAt(cellNum - 1, TicTacToeState.X_MARK);
     }
 
     gameStatus = evalGameStatus();
@@ -96,7 +92,7 @@ public class TicTacToeEnv implements Environment {
       terminated = false;
       // For now, the environment will employ a simple strategy, filling in the
       // first empty cell with an "O"
-      gameBoard.setCharAt(gameBoard.indexOf(Character.toString(EMPTY)), O_MARK);
+      gameBoard.setCharAt(gameBoard.indexOf(Character.toString(TicTacToeState.EMPTY)), TicTacToeState.O_MARK);
     }
 
     newState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
@@ -139,31 +135,31 @@ public class TicTacToeEnv implements Environment {
 
     // Check if this game is still in progress
     for (int idx = 0; idx < TicTacToeState.NUM_CELLS; idx++) {
-      if (gameBoard.charAt(idx) ==  EMPTY) {
+      if (gameBoard.charAt(idx) ==  TicTacToeState.EMPTY) {
         gameStatus = TicTacToeState.GAME_STATUS_IN_PROGRESS;
         break;
       }
     }
 
     // Check if X won
-    if ((gameBoard.charAt(0) == X_MARK && gameBoard.charAt(1) == X_MARK && gameBoard.charAt(2) == X_MARK) ||
-        (gameBoard.charAt(3) == X_MARK && gameBoard.charAt(4) == X_MARK && gameBoard.charAt(5) == X_MARK) ||
-        (gameBoard.charAt(6) == X_MARK && gameBoard.charAt(7) == X_MARK && gameBoard.charAt(8) == X_MARK) ||
-        (gameBoard.charAt(0) == X_MARK && gameBoard.charAt(3) == X_MARK && gameBoard.charAt(6) == X_MARK) ||
-        (gameBoard.charAt(1) == X_MARK && gameBoard.charAt(4) == X_MARK && gameBoard.charAt(7) == X_MARK) ||
-        (gameBoard.charAt(2) == X_MARK && gameBoard.charAt(5) == X_MARK && gameBoard.charAt(8) == X_MARK) ||
-        (gameBoard.charAt(0) == X_MARK && gameBoard.charAt(4) == X_MARK && gameBoard.charAt(8) == X_MARK) ||
-        (gameBoard.charAt(2) == X_MARK && gameBoard.charAt(4) == X_MARK && gameBoard.charAt(6) == X_MARK)) {
+    if ((gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(1) == TicTacToeState.X_MARK && gameBoard.charAt(2) == TicTacToeState.X_MARK) ||
+        (gameBoard.charAt(3) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(5) == TicTacToeState.X_MARK) ||
+        (gameBoard.charAt(6) == TicTacToeState.X_MARK && gameBoard.charAt(7) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.X_MARK) ||
+        (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(3) == TicTacToeState.X_MARK && gameBoard.charAt(6) == TicTacToeState.X_MARK) ||
+        (gameBoard.charAt(1) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(7) == TicTacToeState.X_MARK) ||
+        (gameBoard.charAt(2) == TicTacToeState.X_MARK && gameBoard.charAt(5) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.X_MARK) ||
+        (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.X_MARK) ||
+        (gameBoard.charAt(2) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(6) == TicTacToeState.X_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_X_WON;
     }
-    else if ((gameBoard.charAt(0) == O_MARK && gameBoard.charAt(1) == O_MARK && gameBoard.charAt(2) == O_MARK) ||
-        (gameBoard.charAt(3) == O_MARK && gameBoard.charAt(4) == O_MARK && gameBoard.charAt(5) == O_MARK) ||
-        (gameBoard.charAt(6) == O_MARK && gameBoard.charAt(7) == O_MARK && gameBoard.charAt(8) == O_MARK) ||
-        (gameBoard.charAt(0) == O_MARK && gameBoard.charAt(3) == O_MARK && gameBoard.charAt(6) == O_MARK) ||
-        (gameBoard.charAt(1) == O_MARK && gameBoard.charAt(4) == O_MARK && gameBoard.charAt(7) == O_MARK) ||
-        (gameBoard.charAt(2) == O_MARK && gameBoard.charAt(5) == O_MARK && gameBoard.charAt(8) == O_MARK) ||
-        (gameBoard.charAt(0) == O_MARK && gameBoard.charAt(4) == O_MARK && gameBoard.charAt(8) == O_MARK) ||
-        (gameBoard.charAt(2) == O_MARK && gameBoard.charAt(4) == O_MARK && gameBoard.charAt(6) == O_MARK)) {
+    else if ((gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(2) == TicTacToeState.O_MARK) ||
+        (gameBoard.charAt(3) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(5) == TicTacToeState.O_MARK) ||
+        (gameBoard.charAt(6) == TicTacToeState.O_MARK && gameBoard.charAt(7) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.O_MARK) ||
+        (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(3) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.O_MARK) ||
+        (gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(7) == TicTacToeState.O_MARK) ||
+        (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(5) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.O_MARK) ||
+        (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.O_MARK) ||
+        (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.O_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_O_WON;
     }
     return gameStatus;
