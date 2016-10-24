@@ -13,6 +13,7 @@ Improvements I plan to make include:
 - Try other strategies for "O" including:
     - always random placement
     - random placement except when there are opportunities to block an "X" three-in-a row
+    - mimic an "O" player that never loses to an "X" player that never loses
 
 - Implement the VisualActionObserver so that the board and its moves are visible as Q-Learning is occurring
 
