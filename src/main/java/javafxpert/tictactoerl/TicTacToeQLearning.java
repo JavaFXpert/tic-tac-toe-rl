@@ -14,6 +14,7 @@ import burlap.domain.singleagent.gridworld.GridWorldDomain;
 import burlap.domain.singleagent.gridworld.GridWorldVisualizer;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.SADomain;
+import burlap.mdp.singleagent.common.VisualActionObserver;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.statehashing.HashableStateFactory;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
@@ -30,21 +31,25 @@ public class TicTacToeQLearning {
     SADomain domain = ticTacToeWorld.generateDomain();
     HashableStateFactory hashingFactory = new SimpleHashableStateFactory();
     LearningAgent agent = new QLearning(domain, 0.99, hashingFactory, 0.0, 1.0);
-    Environment env = new TicTacToeEnv();
+    TicTacToeEnv env = new TicTacToeEnv();
 
-    //run learning for 50 episodes
+    //run learning for 200 episodes
     String outputPath = "output/";
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 200; i++){
       Episode e = agent.runLearningEpisode(env);
 
-      e.write(outputPath + "ql_" + i);
-      System.out.println(i + ": " + e.maxTimeStep());
+      //e.write(outputPath + "ql_" + i);
+      //System.out.println(i + ": " + e.maxTimeStep() + "\n");
 
       //reset environment for next learning episode
       env.resetEnvironment();
     }
 
-    Visualizer v = ticTacToeWorld.getVisualizer();
-    new EpisodeSequenceVisualizer(v, domain, outputPath);
+//    VisualActionObserver observer = new VisualActionObserver(ticTacToeWorld.getVisualizer());
+//		observer.initGUI();
+//		env.addObservers(observer);
+
+//    Visualizer v = ticTacToeWorld.getVisualizer();
+//    new EpisodeSequenceVisualizer(v, domain, outputPath);
   }
 }

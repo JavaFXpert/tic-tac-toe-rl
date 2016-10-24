@@ -4,16 +4,19 @@ import burlap.mdp.core.action.Action;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
+import burlap.mdp.singleagent.environment.extensions.EnvironmentObserver;
+import burlap.mdp.singleagent.environment.extensions.EnvironmentServerInterface;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by jamesweaver on 10/21/16.
  */
-public class TicTacToeEnv implements Environment {
-  private static int WIN_REWARD = 8;
-  private static int LOSE_REWARD = -8;
+public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
+  private static int WIN_REWARD = 7;
+  private static int LOSE_REWARD = -3;
   private static int MOVE_REWARD = -1;
 
   /**
@@ -43,8 +46,34 @@ public class TicTacToeEnv implements Environment {
    */
   TicTacToeState currentObservationState;
 
+  protected List<EnvironmentObserver> observers = new LinkedList<EnvironmentObserver>();
+
   public TicTacToeEnv() {
     resetEnvironment();
+  }
+
+  @Override
+  public void addObservers(EnvironmentObserver... observers) {
+    for(EnvironmentObserver o : observers){
+      this.observers.add(o);
+    }
+  }
+
+  @Override
+  public void clearAllObservers() {
+    this.observers.clear();
+  }
+
+  @Override
+  public void removeObservers(EnvironmentObserver... observers) {
+    for(EnvironmentObserver o : observers){
+      this.observers.remove(o);
+    }
+  }
+
+  @Override
+  public List<EnvironmentObserver> observers() {
+    return this.observers;
   }
 
   @Override
@@ -81,6 +110,7 @@ public class TicTacToeEnv implements Environment {
       terminated = true;
     }
     else if (gameStatus.equals(TicTacToeState.GAME_STATUS_O_WON)) {
+      // TODO: Consider removing this condition, as it doen't seem possible to encounter
       reward = LOSE_REWARD;
       terminated = true;
     }
@@ -95,7 +125,16 @@ public class TicTacToeEnv implements Environment {
       // first empty cell with an "O"
       gameBoard.setCharAt(gameBoard.indexOf(Character.toString(TicTacToeState.EMPTY)), TicTacToeState.O_MARK);
 
-      evalGameStatus(); // TODO: Decide whether to make this call, as only purpose now is to print if O won by moving
+      gameStatus = evalGameStatus();  // Evaluate game status after O has responded, and update terminated state
+      if (gameStatus.equals(TicTacToeState.GAME_STATUS_O_WON)) {
+        reward = LOSE_REWARD;
+        terminated = true;
+      }
+      else if (gameStatus.equals(TicTacToeState.GAME_STATUS_CATS_GAME)) {
+        // TODO: Consider removing this condition, as it doen't seem possible to encounter
+        reward = MOVE_REWARD;
+        terminated = true;
+      }
     }
 
     TicTacToeState newState = new TicTacToeState(gameBoard.toString(), gameStatus);
@@ -159,7 +198,8 @@ public class TicTacToeEnv implements Environment {
         (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.X_MARK) ||
         (gameBoard.charAt(2) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(6) == TicTacToeState.X_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_X_WON;
-      System.out.println("X won");
+      //System.out.println("X won");
+      System.out.print("X");
     }
     else if ((gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(2) == TicTacToeState.O_MARK) ||
         (gameBoard.charAt(3) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(5) == TicTacToeState.O_MARK) ||
@@ -170,11 +210,13 @@ public class TicTacToeEnv implements Environment {
         (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.O_MARK) ||
         (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.O_MARK)) {
       gameStatus = TicTacToeState.GAME_STATUS_O_WON;
-      System.out.println("O won");
+      //System.out.println("O won");
+      System.out.print(".");
     }
 
     if (gameStatus.equals(TicTacToeState.GAME_STATUS_CATS_GAME)) {
-      System.out.println("Cat's game");
+      //System.out.println("Cat's game");
+      System.out.print(",");
     }
     return gameStatus;
   }
