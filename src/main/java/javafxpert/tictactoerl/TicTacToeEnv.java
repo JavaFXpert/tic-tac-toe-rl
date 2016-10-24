@@ -56,11 +56,12 @@ public class TicTacToeEnv implements Environment {
   public EnvironmentOutcome executeAction(Action action) {
     MoveAction moveAction = (MoveAction)action;
 
-    TicTacToeState priorState = new TicTacToeState();
-    priorState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
-    priorState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
+    TicTacToeState priorState = new TicTacToeState(gameBoard.toString(), gameStatus);
+//    priorState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
+//    priorState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
 
-    TicTacToeState newState = new TicTacToeState();
+    //TicTacToeState newState = new TicTacToeState();
+    //TicTacToeState newState = priorState.copy();
 
     // actionId is the same as the cell number (1 - 9) of the move
     int cellNum = moveAction.getActionId();
@@ -79,7 +80,7 @@ public class TicTacToeEnv implements Environment {
       reward = WIN_REWARD;
       terminated = true;
     }
-    else if (gameStatus.equals(TicTacToeState.GAME_STATUS_X_WON)) {
+    else if (gameStatus.equals(TicTacToeState.GAME_STATUS_O_WON)) {
       reward = LOSE_REWARD;
       terminated = true;
     }
@@ -97,8 +98,11 @@ public class TicTacToeEnv implements Environment {
       evalGameStatus(); // TODO: Decide whether to make this call, as only purpose now is to print if O won by moving
     }
 
-    newState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
-    newState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
+    TicTacToeState newState = new TicTacToeState(gameBoard.toString(), gameStatus);
+//    newState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
+//    newState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
+
+    currentObservationState = newState.copy();
 
     EnvironmentOutcome environmentOutcome =
         new EnvironmentOutcome(priorState, action, newState, reward, terminated);
@@ -121,9 +125,11 @@ public class TicTacToeEnv implements Environment {
     gameBoard = new StringBuffer(TicTacToeState.EMPTY_BOARD);
     gameStatus = TicTacToeState.GAME_STATUS_IN_PROGRESS;
 
-    currentObservationState = new TicTacToeState();
-    currentObservationState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
-    currentObservationState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
+    currentObservationState = new TicTacToeState(gameBoard.toString(), gameStatus);
+//    currentObservationState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
+//    currentObservationState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
+
+    terminated = false;
   }
 
   /**

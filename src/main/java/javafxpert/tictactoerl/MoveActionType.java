@@ -31,10 +31,10 @@ public class MoveActionType implements ActionType {
 
     String gameStatus = (String)tttState.get(TicTacToeState.VAR_GAME_STATUS);
     if (gameStatus.equals(TicTacToeState.GAME_STATUS_IN_PROGRESS)) {
-      List<Integer> priorMoves = (List<Integer>) tttState.get(TicTacToeState.VAR_GAME_BOARD);
-      for (int i = 1; i <= TicTacToeState.NUM_CELLS; i++) {
-        if (!priorMoves.contains(new Integer(i))) {
-          applicableActions.add(new MoveAction(i));
+      String gameBoard = (String)tttState.get(TicTacToeState.VAR_GAME_BOARD);
+      for (int i = 0; i < TicTacToeState.NUM_CELLS; i++) {
+        if (gameBoard.charAt(i) == TicTacToeState.EMPTY) {
+          applicableActions.add(new MoveAction(i + 1));
         }
       }
     }
