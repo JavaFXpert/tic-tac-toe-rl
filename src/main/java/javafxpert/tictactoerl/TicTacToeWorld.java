@@ -50,14 +50,16 @@ public class TicTacToeWorld implements DomainGenerator {
   }
 
   public class WallPainter implements StatePainter {
+    private int NUM_ROWS_COLS = 5;
+
     public void paint(Graphics2D g2, State s, float cWidth, float cHeight) {
 
       //walls will be filled in black
       g2.setColor(Color.BLACK);
 
       //set up floats for the width and height of our domain
-      float fWidth = 50;
-      float fHeight = 50;
+      float fWidth = NUM_ROWS_COLS;
+      float fHeight = NUM_ROWS_COLS;
 
       //determine the width of a single cell
       //on our canvas such that the whole map can be painted
@@ -66,8 +68,8 @@ public class TicTacToeWorld implements DomainGenerator {
 
       //pass through each cell of our map and if it's a wall, paint a black rectangle on our
       //canvas of dimension widthxheight
-      for(int i = 0; i < 50; i++){
-        for(int j = 0; j < 50; j++){
+      for(int i = 0; i < NUM_ROWS_COLS; i++){
+        for(int j = 0; j < NUM_ROWS_COLS; j++){
 
           //is there a wall here?
           if((i % 2 == 1) || (j % 2 == 1)) {
@@ -82,9 +84,9 @@ public class TicTacToeWorld implements DomainGenerator {
             float ry = cHeight - height - j * height;
 
             //paint the rectangle
-            //g2.fill(new Rectangle2D.Float(rx, ry, width, height));
+            g2.fill(new Rectangle2D.Float(rx, ry, width, height));
 
-            g2.fill(new Rectangle2D.Float(300, 300, 100, 200));
+            //g2.fill(new Rectangle2D.Float(300, 300, 100, 200));
 
           }
 
@@ -97,8 +99,7 @@ public class TicTacToeWorld implements DomainGenerator {
 
   public class AgentPainter implements StatePainter {
 
-    private int NUM_ROWS = 50;
-    private int NUM_COLS = 50;
+    private int NUM_ROWS_COLS = 5;
 
     @Override
     public void paint(Graphics2D g2, State s,
@@ -108,33 +109,44 @@ public class TicTacToeWorld implements DomainGenerator {
       g2.setColor(Color.GRAY);
 
       //set up floats for the width and height of our domain
-      float fWidth = NUM_COLS;
-      float fHeight = NUM_ROWS;
+      float fWidth = NUM_ROWS_COLS;
+      float fHeight = NUM_ROWS_COLS;
 
       //determine the width of a single cell on our canvas
       //such that the whole map can be painted
       float width = cWidth / fWidth;
       float height = cHeight / fHeight;
 
-      int ax = 3;
-      int ay = 3;
+//      int ax = (Integer)s.get(VAR_X);
+//      int ay = (Integer)s.get(VAR_Y);
 
-      //left coordinate of cell on our canvas
-      float rx = ax*width;
+      //pass through each cell of our map and if it's a wall, paint a black rectangle on our
+      //canvas of dimension widthxheight
+      for(int i = 0; i < NUM_ROWS_COLS; i++){
+        for(int j = 0; j < NUM_ROWS_COLS; j++){
 
-      //top coordinate of cell on our canvas
-      //coordinate system adjustment because the java canvas
-      //origin is in the top left instead of the bottom right
-      float ry = cHeight - height - ay*height;
+          //is there a wall here?
+          if((i % 2 == 1) || (j % 2 == 1)) {
+            //if (true) {
 
-      //paint the rectangle
-      g2.fill(new Ellipse2D.Float(rx, ry, width, height));
+            //left coordinate of cell on our canvas
+            float rx = i * width;
 
+            //top coordinate of cell on our canvas
+            //coordinate system adjustment because the java canvas
+            //origin is in the top left instead of the bottom right
+            float ry = cHeight - height - j * height;
+
+            //paint the ellipse
+            g2.fill(new Ellipse2D.Float(rx, ry, width, height));
+
+          }
+
+
+        }
+      }
 
     }
-
-
-
   }
 
 
