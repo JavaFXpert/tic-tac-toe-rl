@@ -68,20 +68,18 @@ public class TicTacToeWorld implements DomainGenerator {
 
       //pass through each cell of our map and if it's a wall, paint a black rectangle on our
       //canvas of dimension widthxheight
-      for(int i = 0; i < NUM_ROWS_COLS; i++){
-        for(int j = 0; j < NUM_ROWS_COLS; j++){
+      for(int col = 0; col < NUM_ROWS_COLS; col++){
+        for(int row = 0; row < NUM_ROWS_COLS; row++){
 
           //is there a wall here?
           //if((i % 2 == 1) || (j % 2 == 1)) {
           if (true) {
 
             //left coordinate of cell on our canvas
-            float rx = i * width;
+            float rx = col * width;
 
             //top coordinate of cell on our canvas
-            //coordinate system adjustment because the java canvas
-            //origin is in the top left instead of the bottom right
-            float ry = cHeight - height - j * height;
+            float ry = row * height;
 
             //paint the rectangle
             g2.draw(new Rectangle2D.Float(rx, ry, width, height));
@@ -137,9 +135,7 @@ public class TicTacToeWorld implements DomainGenerator {
             float rx = col * width;
 
             //top coordinate of cell on our canvas
-            //coordinate system adjustment because the java canvas
-            //origin is in the top left instead of the bottom right
-            float ry = cHeight - height - row * height;
+            float ry = row * height;
 
             //paint the mark (X or O)
             if (cellMark == TicTacToeState.O_MARK) {
@@ -149,8 +145,6 @@ public class TicTacToeWorld implements DomainGenerator {
               g2.drawLine((int)rx, (int)ry, (int)(rx + width), (int)(ry + height));
               g2.drawLine((int)(rx + width), (int)ry, (int)rx, (int)(ry + height));
             }
-            //g2.fill(new Ellipse2D.Float(rx, ry, width, height));
-
           }
 
 
@@ -173,6 +167,16 @@ public class TicTacToeWorld implements DomainGenerator {
 
     Visualizer v = gen.getVisualizer();
     VisualExplorer exp = new VisualExplorer(domain, env, v);
+
+    exp.addKeyAction("1", new MoveAction(1));
+    exp.addKeyAction("2", new MoveAction(2));
+    exp.addKeyAction("3", new MoveAction(3));
+    exp.addKeyAction("4", new MoveAction(4));
+    exp.addKeyAction("5", new MoveAction(5));
+    exp.addKeyAction("6", new MoveAction(6));
+    exp.addKeyAction("7", new MoveAction(7));
+    exp.addKeyAction("8", new MoveAction(8));
+    exp.addKeyAction("9", new MoveAction(9));
 
     exp.initGUI();
   }
