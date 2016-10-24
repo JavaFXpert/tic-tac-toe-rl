@@ -116,8 +116,8 @@ public class TicTacToeWorld implements DomainGenerator {
       float width = cWidth / fWidth;
       float height = cHeight / fHeight;
 
-      int ax = (Integer)s.get(3);
-      int ay = (Integer)s.get(3);
+      int ax = 3;
+      int ay = 3;
 
       //left coordinate of cell on our canvas
       float rx = ax*width;

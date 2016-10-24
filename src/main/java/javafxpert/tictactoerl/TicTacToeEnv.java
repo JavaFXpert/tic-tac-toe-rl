@@ -42,13 +42,18 @@ public class TicTacToeEnv implements Environment {
    */
   private int reward = 0;
 
+  /**
+   * Most recent state, to be returned by currentObservation() method
+   */
+  TicTacToeState currentObservationState;
+
   public TicTacToeEnv() {
     resetEnvironment();
   }
 
   @Override
   public State currentObservation() {
-    return null;
+    return currentObservationState;
   }
 
   @Override
@@ -117,6 +122,10 @@ public class TicTacToeEnv implements Environment {
   public void resetEnvironment() {
     gameBoard = new StringBuffer(TicTacToeState.EMPTY_BOARD);
     gameStatus = TicTacToeState.GAME_STATUS_IN_PROGRESS;
+
+    currentObservationState = new TicTacToeState();
+    currentObservationState.set(TicTacToeState.VAR_GAME_BOARD, gameBoard.toString());
+    currentObservationState.set(TicTacToeState.VAR_GAME_STATUS, gameStatus);
   }
 
   /**
