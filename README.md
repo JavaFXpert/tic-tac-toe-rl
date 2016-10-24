@@ -1,5 +1,5 @@
 # tic-tac-toe-rl
-Uses BURLAP reinforcement learning library to play Tic-Tac-Toe.
+Uses Java, Spring, and BURLAP reinforcement learning library to play Tic-Tac-Toe.
 
 With guidance from Dr. James MacGlashan, I've implemented a Tac-Tac-Toe Q-Learning example using BURLAP 3 libraries.  It loosely implements what is described by Sutton and Barto [1] in the "An Extended Example: Tic-Tac-Toe" section.  The application is Apache 2 licensed, and I welcome collaboration on improvements.  Currently, the LearningAgent plays "X" and always moves first.  The "O" player is implemented in the Environment, and has a very simple (and easily beatable) strategy, which is to always select the first empty cell.  The "O" strategy is stationary enough for "X" to learn to beat it rather consistently after 100 or so episodes.
 
