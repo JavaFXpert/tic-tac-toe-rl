@@ -141,8 +141,15 @@ public class TicTacToeWorld implements DomainGenerator {
             //origin is in the top left instead of the bottom right
             float ry = cHeight - height - row * height;
 
-            //paint the ellipse
-            g2.fill(new Ellipse2D.Float(rx, ry, width, height));
+            //paint the mark (X or O)
+            if (cellMark == TicTacToeState.O_MARK) {
+              g2.draw(new Ellipse2D.Float(rx, ry, width, height));
+            }
+            else {
+              g2.drawLine((int)rx, (int)ry, (int)(rx + width), (int)(ry + height));
+              g2.drawLine((int)(rx + width), (int)ry, (int)rx, (int)(ry + height));
+            }
+            //g2.fill(new Ellipse2D.Float(rx, ry, width, height));
 
           }
 
