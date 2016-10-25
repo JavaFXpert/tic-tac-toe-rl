@@ -11,8 +11,9 @@ To use the Q-Learning algorithm, run the TicTacToeQLearning.java program.  To in
 Improvements I plan to make include:
 
 - Try other strategies for "O" including:
-    - always random placement
-    - random placement except when there are opportunities to block an "X" three-in-a row
+    - [accomplished] always random placement
+    - [accomplished] random placement except when there are opportunities to block an "X" three-in-a row
+    - [accomplished] random placement except when there are opportunities to play a third "O" in a row, or block an "X" three-in-a row
     - mimic an "O" player that never loses to an "X" player that never loses
 
 - Implement the VisualActionObserver so that the board and its moves are visible as Q-Learning is occurring
