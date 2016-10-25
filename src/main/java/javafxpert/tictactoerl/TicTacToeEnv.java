@@ -30,8 +30,8 @@ import java.util.List;
  * @author James L. Weaver (Twitter: @JavaFXpert)
  */
 public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
-  private static int WIN_REWARD = 7;
-  private static int LOSE_REWARD = -7;
+  private static int WIN_REWARD = 5;
+  private static int LOSE_REWARD = -5;
   private static int MOVE_REWARD = -1;
 
   /**
