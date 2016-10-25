@@ -32,12 +32,12 @@ public class TicTacToeQLearning {
     TicTacToeWorld ticTacToeWorld = new TicTacToeWorld();
     SADomain domain = ticTacToeWorld.generateDomain();
     HashableStateFactory hashingFactory = new SimpleHashableStateFactory();
-    LearningAgent agent = new QLearning(domain, 0.99, hashingFactory, 0.0, 1.0);
+    LearningAgent agent = new QLearning(domain, 0.90, hashingFactory, 0.0, 1.0);
     TicTacToeEnv env = new TicTacToeEnv();
 
     //run learning for 200 episodes
     String outputPath = "output/";
-    for(int i = 0; i < 200; i++){
+    for(int i = 0; i < 1000; i++){
       Episode e = agent.runLearningEpisode(env);
 
       e.write(outputPath + "ql_" + i);

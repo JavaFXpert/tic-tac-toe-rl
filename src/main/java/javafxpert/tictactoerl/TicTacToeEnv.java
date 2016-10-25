@@ -134,9 +134,11 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
       reward = MOVE_REWARD;
       terminated = false;
 
-      // For now, the environment will employ a simple strategy, filling in the
-      // first empty cell with an "O"
-      gameBoard.setCharAt(gameBoard.indexOf(Character.toString(TicTacToeState.EMPTY)), TicTacToeState.O_MARK);
+      // Uncomment to employ a strategy of playing the first empty cell with an "O"
+      //playFirstEmptyCell();
+
+      // Uncomment to employ a strategy of playing a completely random empty cell with an "O"
+      playRandomCell();
 
       gameStatus = evalGameStatus();  // Evaluate game status after O has responded, and update terminated state
       if (gameStatus.equals(TicTacToeState.GAME_STATUS_O_WON)) {
@@ -229,4 +231,26 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
     }
     return gameStatus;
   }
+
+  /**
+   * Simple strategy that plays the first empty cell with an "O"
+   */
+  private void playFirstEmptyCell() {
+    gameBoard.setCharAt(gameBoard.indexOf(Character.toString(TicTacToeState.EMPTY)), TicTacToeState.O_MARK);
+  }
+
+  /**
+   * Simple strategy that plays a completely random empty cell with an "O"
+   */
+  private void playRandomCell() {
+    boolean played = false;
+    while (!played) {
+      int proposedCellIndex = (int)(Math.random() * TicTacToeState.NUM_CELLS);
+      if (gameBoard.charAt(proposedCellIndex) == TicTacToeState.EMPTY) {
+        gameBoard.setCharAt(proposedCellIndex, TicTacToeState.O_MARK);
+        played = true;
+      }
+    }
+  }
+
 }
