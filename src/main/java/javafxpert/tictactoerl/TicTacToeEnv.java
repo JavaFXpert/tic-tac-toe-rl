@@ -346,7 +346,7 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
    */
   private int evalGameboardForBlock() {
     int blockingPlay = -1;
-    if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(1) == TicTacToeState.X_MARK && gameBoard.charAt(1) == TicTacToeState.EMPTY) {
+    if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(1) == TicTacToeState.X_MARK && gameBoard.charAt(2) == TicTacToeState.EMPTY) {
       blockingPlay = 2;
     }
     else if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(1) == TicTacToeState.EMPTY && gameBoard.charAt(2) == TicTacToeState.X_MARK) {
@@ -429,7 +429,7 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
    */
   private int evalGameboardForWin() {
     int winningPlay = -1;
-    if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.EMPTY) {
+    if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(2) == TicTacToeState.EMPTY) {
       winningPlay = 2;
     }
     else if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.EMPTY && gameBoard.charAt(2) == TicTacToeState.O_MARK) {
