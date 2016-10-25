@@ -145,7 +145,11 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
 
       // Uncomment to employ a strategy that randomly places "O" except when
       // there are opportunities to play third "O" in a row, or to block an "X" three-in-a row
-      winOrblockOrPlayRandom();
+      //winOrblockOrPlayRandom();
+
+      // Uncomment to employ a strategy that prefers center and random corner placement,
+      // except when there are opportunities to play a third "O" in a row, or block an "X" three-in-a row
+      winOrBlockOrCenterOrRandomCornerOrPlayRandom();
 
       gameStatus = evalGameStatus();  // Evaluate game status after O has responded, and update terminated state
       if (gameStatus.equals(TicTacToeState.GAME_STATUS_O_WON)) {
@@ -288,6 +292,48 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
       gameBoard.setCharAt(cellIndexToPlay, TicTacToeState.O_MARK);
     }
     else {
+      playRandomCell();
+    }
+  }
+
+  /**
+   * Strategy that prefers center or random corner placement, except when
+   * there are opportunities to play a third "O" in a row, or block an "X" three-in-a-row
+   * TODO: Refactor to remove repeating code
+   */
+  private void winOrBlockOrCenterOrRandomCornerOrPlayRandom() {
+    int cellIndexToPlay = evalGameboardForWin();
+    if (cellIndexToPlay != -1) {
+      gameBoard.setCharAt(cellIndexToPlay, TicTacToeState.O_MARK);
+      return;
+    }
+    cellIndexToPlay = evalGameboardForBlock();
+    if (cellIndexToPlay != -1) {
+      gameBoard.setCharAt(cellIndexToPlay, TicTacToeState.O_MARK);
+    }
+    else {
+      playRandomCornerOrCenterOrRandomCell();
+    }
+  }
+
+  /**
+   * Play a random empty corner cell or center cell with an "O".
+   * Note that a counter is used to attempt that number of random
+   * placements, in case none of the corners or center cell is empty.
+   */
+  private void playRandomCornerOrCenterOrRandomCell() {
+    boolean played = false;
+    int counter = 0;
+    while (!played && counter < 100) {
+      // Randomly choose 0, 2, 4, 6, 8 (corners or center)
+      int proposedCellIndex = (int)(Math.random() * 5) * 2;
+      if (gameBoard.charAt(proposedCellIndex) == TicTacToeState.EMPTY) {
+        gameBoard.setCharAt(proposedCellIndex, TicTacToeState.O_MARK);
+        played = true;
+      }
+      counter++;
+    }
+    if (!played) {
       playRandomCell();
     }
   }
