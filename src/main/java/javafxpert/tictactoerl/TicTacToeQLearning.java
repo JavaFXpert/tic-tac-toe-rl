@@ -35,9 +35,9 @@ public class TicTacToeQLearning {
     LearningAgent agent = new QLearning(domain, 0.90, hashingFactory, 0.0, 1.0);
     TicTacToeEnv env = new TicTacToeEnv();
 
-    //run learning for 2000 episodes
+    //run learning for 5000 episodes
     String outputPath = "output/";
-    for(int i = 0; i < 2000; i++){
+    for(int i = 0; i < 3000; i++){
       Episode e = agent.runLearningEpisode(env);
 
       e.write(outputPath + "ql_" + i);
