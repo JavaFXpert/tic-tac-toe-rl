@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
   private static int WIN_REWARD = 7;
-  private static int LOSE_REWARD = -3;
+  private static int LOSE_REWARD = -7;
   private static int MOVE_REWARD = -1;
 
   /**
@@ -138,7 +138,14 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
       //playFirstEmptyCell();
 
       // Uncomment to employ a strategy of playing a completely random empty cell with an "O"
-      playRandomCell();
+      //playRandomCell();
+
+      // Uncomment to employ a strategy that randomly places "O" except when there are opportunities to block an "X" three-in-a row
+      //blockOrPlayRandom();
+
+      // Uncomment to employ a strategy that randomly places "O" except when
+      // there are opportunities to play third "O" in a row, or to block an "X" three-in-a row
+      winOrblockOrPlayRandom();
 
       gameStatus = evalGameStatus();  // Evaluate game status after O has responded, and update terminated state
       if (gameStatus.equals(TicTacToeState.GAME_STATUS_O_WON)) {
@@ -252,5 +259,204 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
       }
     }
   }
+
+  /**
+   * Strategy that randomly places "O" except when there are opportunities to block an "X" three-in-a row
+   */
+  private void blockOrPlayRandom() {
+    int cellIndexToPlay = evalGameboardForBlock();
+    if (cellIndexToPlay != -1) {
+      gameBoard.setCharAt(cellIndexToPlay, TicTacToeState.O_MARK);
+    }
+    else {
+      playRandomCell();
+    }
+  }
+
+  /**
+   * Strategy that randomly places "O" except when there are opportunities to
+   * play third "O" in a row, to block an "X" three-in-a row
+   */
+  private void winOrblockOrPlayRandom() {
+    int cellIndexToPlay = evalGameboardForWin();
+    if (cellIndexToPlay != -1) {
+      gameBoard.setCharAt(cellIndexToPlay, TicTacToeState.O_MARK);
+      return;
+    }
+    cellIndexToPlay = evalGameboardForBlock();
+    if (cellIndexToPlay != -1) {
+      gameBoard.setCharAt(cellIndexToPlay, TicTacToeState.O_MARK);
+    }
+    else {
+      playRandomCell();
+    }
+  }
+
+  /**
+   * Evaluate the gameboard for an opportunity to block "X" three-in-a row
+   * TODO: Modify with a less brute-force, and less verbose, approach.  Possibly factor with evalGameboardForWin() method
+   *
+   * @return Zero-based index of cell that would block, or -1 if no cells apply
+   */
+  private int evalGameboardForBlock() {
+    int blockingPlay = -1;
+    if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(1) == TicTacToeState.X_MARK && gameBoard.charAt(1) == TicTacToeState.EMPTY) {
+      blockingPlay = 2;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(1) == TicTacToeState.EMPTY && gameBoard.charAt(2) == TicTacToeState.X_MARK) {
+      blockingPlay = 1;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.EMPTY && gameBoard.charAt(1) == TicTacToeState.X_MARK && gameBoard.charAt(2) == TicTacToeState.X_MARK) {
+      blockingPlay = 0;
+    }
+    else if (gameBoard.charAt(3) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(5) == TicTacToeState.EMPTY) {
+      blockingPlay = 5;
+    }
+    else if (gameBoard.charAt(3) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.EMPTY && gameBoard.charAt(5) == TicTacToeState.X_MARK) {
+      blockingPlay = 4;
+    }
+    else if (gameBoard.charAt(3) == TicTacToeState.EMPTY && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(5) == TicTacToeState.X_MARK) {
+      blockingPlay = 3;
+    }
+    else if (gameBoard.charAt(6) == TicTacToeState.X_MARK && gameBoard.charAt(7) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.EMPTY) {
+      blockingPlay = 8;
+    }
+    else if (gameBoard.charAt(6) == TicTacToeState.X_MARK && gameBoard.charAt(7) == TicTacToeState.EMPTY && gameBoard.charAt(8) == TicTacToeState.X_MARK) {
+      blockingPlay = 7;
+    }
+    else if (gameBoard.charAt(6) == TicTacToeState.EMPTY && gameBoard.charAt(7) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.X_MARK) {
+      blockingPlay = 6;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(3) == TicTacToeState.X_MARK && gameBoard.charAt(6) == TicTacToeState.EMPTY) {
+      blockingPlay = 6;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(3) == TicTacToeState.EMPTY && gameBoard.charAt(6) == TicTacToeState.X_MARK) {
+      blockingPlay = 3;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.EMPTY && gameBoard.charAt(3) == TicTacToeState.X_MARK && gameBoard.charAt(6) == TicTacToeState.X_MARK) {
+      blockingPlay = 0;
+    }
+    else if (gameBoard.charAt(1) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(7) == TicTacToeState.EMPTY) {
+      blockingPlay = 7;
+    }
+    else if (gameBoard.charAt(1) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.EMPTY && gameBoard.charAt(7) == TicTacToeState.X_MARK) {
+      blockingPlay = 4;
+    }
+    else if (gameBoard.charAt(1) == TicTacToeState.EMPTY && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(7) == TicTacToeState.X_MARK) {
+      blockingPlay = 1;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.X_MARK && gameBoard.charAt(5) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.EMPTY) {
+      blockingPlay = 8;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.X_MARK && gameBoard.charAt(5) == TicTacToeState.EMPTY && gameBoard.charAt(8) == TicTacToeState.X_MARK) {
+      blockingPlay = 5;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.EMPTY && gameBoard.charAt(5) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.X_MARK) {
+      blockingPlay = 2;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.EMPTY) {
+      blockingPlay = 8;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.EMPTY && gameBoard.charAt(8) == TicTacToeState.X_MARK) {
+      blockingPlay = 4;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.EMPTY && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(8) == TicTacToeState.X_MARK) {
+      blockingPlay = 0;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(6) == TicTacToeState.EMPTY) {
+      blockingPlay = 6;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.X_MARK && gameBoard.charAt(4) == TicTacToeState.EMPTY && gameBoard.charAt(6) == TicTacToeState.X_MARK) {
+      blockingPlay = 4;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.EMPTY && gameBoard.charAt(4) == TicTacToeState.X_MARK && gameBoard.charAt(6) == TicTacToeState.X_MARK) {
+      blockingPlay = 2;
+    }
+    return blockingPlay;
+  }
+
+  /**
+   * Evaluate the gameboard for an opportunity to get "O" three-in-a row
+   * TODO: Modify with a less brute-force, and less verbose, approach.  Possibly factor with evalGameboardForBlock() method
+   *
+   * @return Zero-based index of cell that would win, or -1 if no cells apply
+   */
+  private int evalGameboardForWin() {
+    int winningPlay = -1;
+    if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.EMPTY) {
+      winningPlay = 2;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(1) == TicTacToeState.EMPTY && gameBoard.charAt(2) == TicTacToeState.O_MARK) {
+      winningPlay = 1;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.EMPTY && gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(2) == TicTacToeState.O_MARK) {
+      winningPlay = 0;
+    }
+    else if (gameBoard.charAt(3) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(5) == TicTacToeState.EMPTY) {
+      winningPlay = 5;
+    }
+    else if (gameBoard.charAt(3) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.EMPTY && gameBoard.charAt(5) == TicTacToeState.O_MARK) {
+      winningPlay = 4;
+    }
+    else if (gameBoard.charAt(3) == TicTacToeState.EMPTY && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(5) == TicTacToeState.O_MARK) {
+      winningPlay = 3;
+    }
+    else if (gameBoard.charAt(6) == TicTacToeState.O_MARK && gameBoard.charAt(7) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.EMPTY) {
+      winningPlay = 8;
+    }
+    else if (gameBoard.charAt(6) == TicTacToeState.O_MARK && gameBoard.charAt(7) == TicTacToeState.EMPTY && gameBoard.charAt(8) == TicTacToeState.O_MARK) {
+      winningPlay = 7;
+    }
+    else if (gameBoard.charAt(6) == TicTacToeState.EMPTY && gameBoard.charAt(7) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.O_MARK) {
+      winningPlay = 6;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(3) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.EMPTY) {
+      winningPlay = 6;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(3) == TicTacToeState.EMPTY && gameBoard.charAt(6) == TicTacToeState.O_MARK) {
+      winningPlay = 3;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.EMPTY && gameBoard.charAt(3) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.O_MARK) {
+      winningPlay = 0;
+    }
+    else if (gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(7) == TicTacToeState.EMPTY) {
+      winningPlay = 7;
+    }
+    else if (gameBoard.charAt(1) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.EMPTY && gameBoard.charAt(7) == TicTacToeState.O_MARK) {
+      winningPlay = 4;
+    }
+    else if (gameBoard.charAt(1) == TicTacToeState.EMPTY && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(7) == TicTacToeState.O_MARK) {
+      winningPlay = 1;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(5) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.EMPTY) {
+      winningPlay = 8;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(5) == TicTacToeState.EMPTY && gameBoard.charAt(8) == TicTacToeState.O_MARK) {
+      winningPlay = 5;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.EMPTY && gameBoard.charAt(5) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.O_MARK) {
+      winningPlay = 2;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.EMPTY) {
+      winningPlay = 8;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.EMPTY && gameBoard.charAt(8) == TicTacToeState.O_MARK) {
+      winningPlay = 4;
+    }
+    else if (gameBoard.charAt(0) == TicTacToeState.EMPTY && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(8) == TicTacToeState.O_MARK) {
+      winningPlay = 0;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.EMPTY) {
+      winningPlay = 6;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.O_MARK && gameBoard.charAt(4) == TicTacToeState.EMPTY && gameBoard.charAt(6) == TicTacToeState.O_MARK) {
+      winningPlay = 4;
+    }
+    else if (gameBoard.charAt(2) == TicTacToeState.EMPTY && gameBoard.charAt(4) == TicTacToeState.O_MARK && gameBoard.charAt(6) == TicTacToeState.O_MARK) {
+      winningPlay = 2;
+    }
+    return winningPlay;
+  }
+
 
 }
