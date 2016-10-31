@@ -57,6 +57,8 @@ public class TicTacToeWorld implements DomainGenerator {
 
     public void paint(Graphics2D g2, State s, float cWidth, float cHeight) {
 
+      g2.setStroke(new BasicStroke(5));
+
       g2.setColor(Color.BLACK);
 
       //set up floats for the width and height of our domain
@@ -68,25 +70,15 @@ public class TicTacToeWorld implements DomainGenerator {
       float width = cWidth / fWidth;
       float height = cHeight / fHeight;
 
-      for(int col = 0; col < NUM_ROWS_COLS; col++){
-        for(int row = 0; row < NUM_ROWS_COLS; row++){
-
-          if (true) {
-
-            //left coordinate of cell on our canvas
-            float rx = col * width;
-
-            //top coordinate of cell on our canvas
-            float ry = row * height;
-
-            //paint the rectangle
-            g2.draw(new Rectangle2D.Float(rx, ry, width, height));
-          }
-
-
-        }
+      for(int col = 1; col < NUM_ROWS_COLS; col++){
+        float rx = col * width;
+        g2.drawLine((int)rx, 0, (int)rx, (int)cHeight);
       }
 
+      for(int row = 1; row < NUM_ROWS_COLS; row++){
+        float ry = row * height;
+        g2.drawLine(0, (int)ry, (int)cWidth, (int)ry);
+      }
     }
   }
 
@@ -98,6 +90,8 @@ public class TicTacToeWorld implements DomainGenerator {
     @Override
     public void paint(Graphics2D g2, State s,
                       float cWidth, float cHeight) {
+
+      g2.setStroke(new BasicStroke(5));
 
       //marks will be filled in gray
       g2.setColor(Color.BLUE);
@@ -133,11 +127,11 @@ public class TicTacToeWorld implements DomainGenerator {
 
             //paint the mark (X or O)
             if (cellMark == TicTacToeState.O_MARK) {
-              g2.draw(new Ellipse2D.Float(rx, ry, width, height));
+              g2.draw(new Ellipse2D.Float(rx + width * 0.25f, ry + height * 0.25f, width * .50f, height * .50f));
             }
             else {
-              g2.drawLine((int)rx, (int)ry, (int)(rx + width), (int)(ry + height));
-              g2.drawLine((int)(rx + width), (int)ry, (int)rx, (int)(ry + height));
+              g2.drawLine((int)(rx + width * 0.25f), (int)(ry + height * 0.25f), (int)(rx + width * 0.75), (int)(ry + height * 0.75));
+              g2.drawLine((int)(rx + width * 0.75), (int)(ry + height * 0.25f), (int)(rx + width * 0.25f), (int)(ry + height * 0.75));
             }
           }
         }
