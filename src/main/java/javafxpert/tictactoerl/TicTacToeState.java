@@ -47,6 +47,7 @@ public class TicTacToeState implements MutableState {
   public static String GAME_STATUS_CATS_GAME =   "C";
 
   public static String EMPTY_BOARD = "IIIIIIIII"; //TODO: Put back
+  public static String ONE_X_BOARD = "XIIIIIIII"; //TODO: Put back
 
   /**
    * String representation of cells on the game board.
