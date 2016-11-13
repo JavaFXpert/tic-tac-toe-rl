@@ -22,7 +22,7 @@ import burlap.mdp.core.action.Action;
  */
 public class MoveAction implements Action {
   /**
-   * The action ID of this action.  Corresponds to a tic-tac-toe cell (1-9)
+   * The action ID of this action.  Corresponds to a tic-tac-toe cell (zero based 0-8)
    */
   private int actionId;
 

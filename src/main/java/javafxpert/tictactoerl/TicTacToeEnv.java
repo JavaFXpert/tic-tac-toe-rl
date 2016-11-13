@@ -30,8 +30,8 @@ import java.util.List;
  * @author James L. Weaver (Twitter: @JavaFXpert)
  */
 public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
-  private static int WIN_REWARD = 5;
-  private static int LOSE_REWARD = -5;
+  private static int WIN_REWARD = 10;
+  private static int LOSE_REWARD = -10;
   private static int MOVE_REWARD = -1;
 
   /**
@@ -102,17 +102,17 @@ public class TicTacToeEnv implements Environment, EnvironmentServerInterface {
 
     TicTacToeState priorState = new TicTacToeState(gameBoard.toString(), gameStatus);
 
-    // actionId is the same as the cell number (1 - 9) of the move
+    // actionId is the same as the cell number (0 - 8) of the move
     int cellNum = moveAction.getActionId();
 
-    if (cellNum < 1 || cellNum > TicTacToeState.NUM_CELLS ||
-        (gameBoard.charAt(cellNum - 1) != TicTacToeState.EMPTY)) {
+    if (cellNum < 0 || cellNum >= TicTacToeState.NUM_CELLS ||
+        (gameBoard.charAt(cellNum) != TicTacToeState.EMPTY)) {
 
       // Illegal move attempted so don't change
       System.out.println("Illegal move attempted to cell " + cellNum);
     }
     else {
-      gameBoard.setCharAt(cellNum - 1, TicTacToeState.X_MARK);
+      gameBoard.setCharAt(cellNum, TicTacToeState.X_MARK);
     }
 
     gameStatus = evalGameStatus();

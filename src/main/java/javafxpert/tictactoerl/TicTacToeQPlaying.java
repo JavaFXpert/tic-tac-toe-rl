@@ -64,14 +64,15 @@ public class TicTacToeQPlaying {
     // Use the trained agent to play tic-tac-toe in a new environment
     EpsilonGreedy nonGreedyPolicyPlayer = new EpsilonGreedy(qLearningAgent, 0.0);
     TicTacToePlayerEnv ticTacToePlayerEnv = new TicTacToePlayerEnv(nonGreedyPolicyPlayer);
+    //TicTacToePlayerEnv ticTacToePlayerEnv = new TicTacToePlayerEnv(greedyPolicy);
 
     System.out.println();
-    Action humanAction = new MoveAction(3);
+    Action humanAction = new MoveAction(2);
     EnvironmentOutcome environmentOutcome = ticTacToePlayerEnv.executeAction(humanAction);
     System.out.println("environmentOutcome.op: " + environmentOutcome.op);
 
     System.out.println();
-    MoveAction humanAction2 = new MoveAction(9);
+    MoveAction humanAction2 = new MoveAction(7);
     EnvironmentOutcome environmentOutcome2 = ticTacToePlayerEnv.executeActionWithGameBoard(humanAction2, "XIOXIOIII");
     System.out.println("environmentOutcome2.op: " + environmentOutcome2.op);
 

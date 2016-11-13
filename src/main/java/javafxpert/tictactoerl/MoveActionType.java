@@ -35,7 +35,7 @@ public class MoveActionType implements ActionType {
 
   @Override
   public Action associatedAction(String strRep) {
-    return new MoveAction(1); //TODO: Ascertain what is needed here
+    return new MoveAction(0); //TODO: Ascertain what is needed here
   }
 
   @Override
@@ -48,7 +48,7 @@ public class MoveActionType implements ActionType {
       String gameBoard = (String)tttState.get(TicTacToeState.VAR_GAME_BOARD);
       for (int i = 0; i < TicTacToeState.NUM_CELLS; i++) {
         if (gameBoard.charAt(i) == TicTacToeState.EMPTY) {
-          applicableActions.add(new MoveAction(i + 1));
+          applicableActions.add(new MoveAction(i));
         }
       }
     }

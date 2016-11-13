@@ -34,8 +34,8 @@ import java.util.List;
  * @author James L. Weaver (Twitter: @JavaFXpert)
  */
 public class TicTacToePlayerEnv implements Environment, EnvironmentServerInterface {
-  private static int WIN_REWARD = 5;
-  private static int LOSE_REWARD = -5;
+  private static int WIN_REWARD = 10;
+  private static int LOSE_REWARD = -10;
   private static int MOVE_REWARD = -1;
 
   /**
@@ -112,17 +112,17 @@ public class TicTacToePlayerEnv implements Environment, EnvironmentServerInterfa
 
     TicTacToeState priorState = new TicTacToeState(gameBoard.toString(), gameStatus);
 
-    // actionId is the same as the cell number (1 - 9) of the move
+    // actionId is the same as the cell number (0 - 8) of the move
     int cellNum = humanAction.getActionId();
 
-    if (cellNum < 1 || cellNum > TicTacToeState.NUM_CELLS ||
-        (gameBoard.charAt(cellNum - 1) != TicTacToeState.EMPTY)) {
+    if (cellNum < 0 || cellNum >= TicTacToeState.NUM_CELLS ||
+        (gameBoard.charAt(cellNum) != TicTacToeState.EMPTY)) {
 
       // Illegal move attempted so don't change
       System.out.println("Illegal move attempted to cell " + cellNum);
     }
     else {
-      gameBoard.setCharAt(cellNum - 1, TicTacToeState.O_MARK);
+      gameBoard.setCharAt(cellNum, TicTacToeState.O_MARK);
     }
 
     gameStatus = evalGameStatus();
@@ -154,10 +154,8 @@ public class TicTacToePlayerEnv implements Environment, EnvironmentServerInterfa
       System.out.println("actionProbs: " + actionProbs);
 
       MoveAction playerAction = (MoveAction)epsilonGreedyPolicy.action(priorState);
-      //String actionName = playerAction.actionName();
-      System.out.println("playerAction.getActionId() - 1: " + (playerAction.getActionId() - 1));
-      int proposedCellIndex = playerAction.getActionId() - 1;
-      //int proposedCellIndex = Integer.parseInt(actionName.substring(actionName.length() - 1)) - 1;
+      System.out.println("playerAction.getActionId(): " + (playerAction.getActionId()));
+      int proposedCellIndex = playerAction.getActionId();
 
       if (gameBoard.charAt(proposedCellIndex) == TicTacToeState.EMPTY) {
         gameBoard.setCharAt(proposedCellIndex, TicTacToeState.X_MARK);
