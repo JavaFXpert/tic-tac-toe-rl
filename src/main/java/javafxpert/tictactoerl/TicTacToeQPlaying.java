@@ -44,7 +44,7 @@ public class TicTacToeQPlaying {
 
     //run learning for 5000 episodes
     String outputPath = "output/";
-    for(int i = 0; i < 10000; i++){
+    for(int i = 0; i < 5000; i++){
       Episode e = qLearningAgent.runLearningEpisode(env);
 
       e.write(outputPath + "ql_" + i);
@@ -69,5 +69,11 @@ public class TicTacToeQPlaying {
     Action humanAction = new MoveAction(3);
     EnvironmentOutcome environmentOutcome = ticTacToePlayerEnv.executeAction(humanAction);
     System.out.println("environmentOutcome.op: " + environmentOutcome.op);
+
+    System.out.println();
+    MoveAction humanAction2 = new MoveAction(9);
+    EnvironmentOutcome environmentOutcome2 = ticTacToePlayerEnv.executeActionWithGameBoard(humanAction2, "XIOXIOIII");
+    System.out.println("environmentOutcome2.op: " + environmentOutcome2.op);
+
   }
 }
