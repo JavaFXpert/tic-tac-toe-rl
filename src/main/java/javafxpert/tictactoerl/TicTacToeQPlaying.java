@@ -38,13 +38,27 @@ public class TicTacToeQPlaying {
     HashableStateFactory hashingFactory = new SimpleHashableStateFactory();
     QLearning qLearningAgent = new QLearning(domain, 0.90, hashingFactory, 0.0, 1.0);
 
-    EpsilonGreedy greedyPolicy = new EpsilonGreedy(qLearningAgent, 0.1);
+    EpsilonGreedy greedyPolicy = new EpsilonGreedy(qLearningAgent, 0.5);
 
     TicTacToeEnv env = new TicTacToeEnv();
 
-    //run learning for 5000 episodes
     String outputPath = "output/";
-    for(int i = 0; i < 5000; i++){
+
+    env.setEnvPlayerMark(TicTacToeState.O_MARK);
+    for(int i = 0; i < 4000; i++){
+      Episode e = qLearningAgent.runLearningEpisode(env);
+
+      e.write(outputPath + "ql_" + i);
+
+      //reset environment for next learning episode
+      env.resetEnvironment();
+    }
+
+    System.out.println();
+    System.out.println();
+
+    env.setEnvPlayerMark(TicTacToeState.X_MARK);
+    for(int i = 4000; i < 8000; i++){
       Episode e = qLearningAgent.runLearningEpisode(env);
 
       e.write(outputPath + "ql_" + i);
@@ -58,8 +72,8 @@ public class TicTacToeQPlaying {
 //		observer.initGUI();
 //		env.addObservers(observer);
 
-//    Visualizer v = ticTacToeWorld.getVisualizer();
-//    new EpisodeSequenceVisualizer(v, domain, outputPath);
+    Visualizer v = ticTacToeWorld.getVisualizer();
+    new EpisodeSequenceVisualizer(v, domain, outputPath);
 
     // Use the trained agent to play tic-tac-toe in a new environment
     EpsilonGreedy nonGreedyPolicyPlayer = new EpsilonGreedy(qLearningAgent, 0.0);
@@ -67,13 +81,13 @@ public class TicTacToeQPlaying {
     //TicTacToePlayerEnv ticTacToePlayerEnv = new TicTacToePlayerEnv(greedyPolicy);
 
     System.out.println();
-    Action humanAction = new MoveAction(2);
+    Action humanAction = new MoveAction(4);
     EnvironmentOutcome environmentOutcome = ticTacToePlayerEnv.executeAction(humanAction);
     System.out.println("environmentOutcome.op: " + environmentOutcome.op);
 
     System.out.println();
-    MoveAction humanAction2 = new MoveAction(7);
-    EnvironmentOutcome environmentOutcome2 = ticTacToePlayerEnv.executeActionWithGameBoard(humanAction2, "XIOXIOIII");
+    MoveAction humanAction2 = new MoveAction(5);
+    EnvironmentOutcome environmentOutcome2 = ticTacToePlayerEnv.executeActionWithGameBoard(humanAction2, "OIIXXIXIO");
     System.out.println("environmentOutcome2.op: " + environmentOutcome2.op);
 
   }
